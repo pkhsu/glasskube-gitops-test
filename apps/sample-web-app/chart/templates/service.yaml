@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eap-distr-simulator.fullname" . }}
+  labels:
+    {{- include "eap-distr-simulator.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http # Corresponds to the port name in deployment.yaml
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "eap-distr-simulator.selectorLabels" . | nindent 4 }}

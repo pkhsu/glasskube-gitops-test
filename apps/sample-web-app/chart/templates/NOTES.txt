@@ -1,0 +1,26 @@
+{{- $fullName := include "eap-distr-simulator.fullname" . -}}
+{{- $namespace := .Release.Namespace -}}
+{{- $servicePort := .Values.service.port -}}
+{{- $serviceType := .Values.service.type -}}
+
+The EAP Distribution Simulator has been deployed.
+
+{{- if contains "NodePort" $serviceType }}
+  export NODE_PORT=$(kubectl get --namespace {{ $namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ $fullName }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ $namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo "Access the application via http://$NODE_IP:$NODE_PORT"
+{{- else if contains "LoadBalancer" $serviceType }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get --namespace {{ $namespace }} svc -w {{ $fullName }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ $namespace }} {{ $fullName }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo "Access the application via http://$SERVICE_IP:{{ $servicePort }}"
+{{- else if contains "ClusterIP" $serviceType }}
+  echo "Access the application using port-forwarding:"
+  echo "  kubectl port-forward --namespace {{ $namespace }} svc/{{ $fullName }} {{ $servicePort }}:{{ $servicePort }}"
+  echo "Then open http://localhost:{{ $servicePort }} in your browser."
+{{- end }}
+
+To test the distribution endpoint, you can use curl:
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"packageName": "my-cool-app", "targetCluster": "edge-cluster-1", "version": "1.2.3"}' \
+  http://<SERVICE_IP_OR_LOCALHOST>:{{ $servicePort }}/distribute
