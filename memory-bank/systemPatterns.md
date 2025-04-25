@@ -1,61 +1,61 @@
-# System Patterns
+# 系統模式
 
-## Architecture Overview
+## 架構概述
 
 ```
 glasskube-gitops-test/
-├── apps/                       # Original application definitions
-│   ├── shiori/                 # Shiori Kubernetes manifests
-│   └── sample-web-app/         # Sample Web App with Helm chart
-└── glasskube-packages/         # Glasskube package repository
-    └── packages/               # Package definitions directory
-        ├── index.yaml          # Repository index
-        ├── shiori/             # Shiori package
-        └── sample-web-app/     # Sample Web App package
+├── apps/                       # 原始應用程式定義
+│   ├── shiori/                 # Shiori Kubernetes 清單檔
+│   └── sample-web-app/         # Sample Web App 與 Helm chart
+└── glasskube-packages/         # Glasskube 套件庫
+    └── packages/               # 套件定義目錄
+        ├── index.yaml          # 套件庫索引
+        ├── shiori/             # Shiori 套件
+        └── sample-web-app/     # Sample Web App 套件
 ```
 
-## Key Components
+## 關鍵元件
 
-### 1. Applications (Source of Truth)
-The `apps/` directory contains the original application definitions that serve as the single source of truth:
-- **Shiori**: Uses Kubernetes YAML manifests to define deployments, services, etc.
-- **Sample Web App**: Uses a Helm chart for deployment
+### 1. 應用程式 (最原始資源)
+`apps/` 目錄包含做為單一資料來源的原始應用程式定義：
+- **Shiori**: 使用 Kubernetes YAML 清單定義部署、服務等
+- **Sample Web App**: 使用 Helm chart 進行部署
 
-### 2. Glasskube Package Repository
-The `glasskube-packages/` directory contains the Glasskube package definitions:
-- **index.yaml**: Lists all available packages in the repository
-- **Package Directories**: Each application has its own directory with versions
+### 2. Glasskube 套件庫
+`glasskube-packages/` 目錄包含 Glasskube 套件定義：
+- **index.yaml**: 列出所有可用的套件
+- **套件目錄**: 每個應用程式都有自己的目錄和版本
 
-### 3. Package Definitions
-Each package has a standardized structure:
-- **versions.yaml**: Lists all available versions with the latest marked
-- **v{version}+{build}/package.yaml**: Full package definition for specific versions
+### 3. 套件定義
+每個套件都有標準化的結構：
+- **versions.yaml**: 列出所有可用版本，並標記最新版本
+- **v{version}+{build}/package.yaml**: 特定版本的完整套件定義
 
-## Implementation Patterns
+## 實作模式
 
-### Direct File Reference Pattern
-Instead of duplicating files, package definitions reference original files directly:
+### GitHub 直接引用模式
+套件定義使用 GitHub raw URL 直接引用原始檔案，避免重複：
 ```yaml
-# For manifests-based packages (Shiori)
+# 對於基於清單的套件 (Shiori)
 manifests:
-  - url: /apps/shiori/namespace.yaml
-  - url: /apps/shiori/deployment.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/namespace.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
   # ...
 
-# For Helm-based packages (Sample Web App)
+# 對於基於 Helm 的套件 (Sample Web App)
 helm:
   chartName: eap-distr-simulator
   chartVersion: 0.1.0
-  repositoryUrl: /apps/sample-web-app/chart/
+  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
 ```
 
-### Value Definition Pattern
-Configuration parameters are defined with targets that patch specific parts of manifests/charts:
+### 值定義模式
+配置參數使用目標定義，對清單或圖表的特定部分進行修補：
 ```yaml
 valueDefinitions:
   hostname:
     metadata:
-      description: "The hostname for accessing..."
+      description: "用於訪問應用的主機名..."
     type: text
     defaultValue: "example.com"
     targets:
@@ -66,18 +66,15 @@ valueDefinitions:
               path: /spec/rules/0/host
 ```
 
-### Repository Hosting Pattern
-The repository is hosted using a static file server with Docker for consistency:
+### 套件庫訪問模式
+套件庫直接通過 GitHub raw URLs 訪問，無需本地伺服器：
 ```bash
-docker run --rm -it \
-  -v "$(pwd):/srv" \
-  -p 9684:80 \
-  caddy:2-alpine \
-  caddy file-server --root /srv --listen :80
+# 添加基於 GitHub 的套件庫
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
 ```
 
-## Critical Implementation Paths
+## 關鍵實作路徑
 
-1. **Package Definition → Original Files**: Package definitions must correctly reference files in the `apps/` directory
-2. **Static Server → Package Repository**: The Docker-based Caddy server must serve files from the correct root directory
-3. **Glasskube CLI → Repository**: Glasskube CLI must be able to access the repository via HTTP
+1. **套件定義 → GitHub 原始檔案**: 套件定義必須正確引用 GitHub 上 `apps/` 目錄中的檔案
+2. **GitHub URLs → 套件檔案**: GitHub raw URLs 必須是公開可訪問的，並指向正確的分支
+3. **Glasskube CLI → 套件庫**: Glasskube CLI 必須能夠通過 HTTPS 訪問 GitHub 上的套件庫

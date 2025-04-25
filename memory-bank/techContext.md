@@ -1,108 +1,106 @@
-# Technical Context
+# 技術背景
 
-## Technologies Used
+## 使用的技術
 
-### Core Technologies
-- **Kubernetes**: Container orchestration platform
-- **Glasskube**: Kubernetes package manager
-- **Docker**: Container platform used for hosting the package repository
+### 核心技術
+- **Kubernetes**: 容器編排平台
+- **Glasskube**: Kubernetes 套件管理器
+- **GitHub**: 檔案託管和版本控制平台，用於託管套件庫和應用程式檔案
 
-### Package Definition
-- **YAML**: Used for Kubernetes manifests and Glasskube package definitions
-- **JSON Schema**: Used for package.yaml validation (https://glasskube.dev/schemas/v1/package-manifest.json)
+### 套件定義
+- **YAML**: 用於 Kubernetes 清單和 Glasskube 套件定義
+- **JSON Schema**: 用於 package.yaml 驗證 (https://glasskube.dev/schemas/v1/package-manifest.json)
 
-### Web Server
-- **Caddy**: Lightweight, modern web server used to serve static files
-- **HTTP/HTTPS**: Protocol for accessing the package repository
+### 網路訪問
+- **HTTPS**: 用於存取 GitHub raw 內容的協議
+- **Raw GitHub URLs**: 用於直接存取 GitHub 上的檔案內容
 
-## Development Setup
+## 開發設置
 
-### Prerequisites
-- **Docker**: Required for running the Caddy server
-- **Kubernetes Cluster**: Required for testing package installations
-- **Glasskube CLI**: Required for interacting with packages and repositories
+### 前置需求
+- **GitHub 帳號**: 用於存儲和訪問套件庫檔案
+- **Kubernetes 叢集**: 用於測試套件安裝
+- **Glasskube CLI**: 用於與套件和套件庫交互
 
-### Directory Structure
+### 目錄結構
 ```
 glasskube-gitops-test/
-├── apps/                      # Original application sources
-│   ├── shiori/                # K8s manifests for Shiori
+├── apps/                      # 原始應用程式源碼
+│   ├── shiori/                # Shiori 的 K8s 清單檔
 │   │   ├── cluster.yaml
 │   │   ├── deployment.yaml
 │   │   ├── ingress.yaml
 │   │   ├── namespace.yaml
 │   │   ├── persistentvolumeclaim.yaml
 │   │   └── service.yaml
-│   └── sample-web-app/        # Sample Node.js app with Helm
-│       ├── chart/             # Helm chart directory
-│       │   ├── templates/     # Helm templates
-│       │   ├── Chart.yaml     # Chart definition
-│       │   └── values.yaml    # Default values
-│       ├── Dockerfile         # Container image definition
-│       ├── index.js           # Application code
-│       └── package.json       # Node.js dependencies
-├── glasskube-packages/        # Glasskube package repository
-│   ├── packages/              # Package definitions directory
-│   │   ├── index.yaml         # Repository index
-│   │   ├── shiori/            # Shiori package
-│   │   │   ├── versions.yaml  # Version list
-│   │   │   └── v1.0.0+1/      # Specific version
-│   │   │       └── package.yaml # Package definition
-│   │   └── sample-web-app/    # Sample Web App package
-│   │       ├── versions.yaml  # Version list
-│   │       └── v1.0.0+1/      # Specific version
-│   │           └── package.yaml # Package definition
-│   └── README.md              # Repository documentation
-├── docker-caddy.sh            # Script to start Docker Caddy server
-├── README.md                  # Project overview
-└── USAGE-GUIDE.md             # Detailed usage instructions
+│   └── sample-web-app/        # Sample Node.js 應用與 Helm
+│       ├── chart/             # Helm chart 目錄
+│       │   ├── templates/     # Helm 模板
+│       │   ├── Chart.yaml     # Chart 定義
+│       │   └── values.yaml    # 預設值
+│       ├── Dockerfile         # 容器映像定義
+│       ├── index.js           # 應用程式代碼
+│       └── package.json       # Node.js 依賴
+├── glasskube-packages/        # Glasskube 套件庫
+│   ├── packages/              # 套件定義目錄
+│   │   ├── index.yaml         # 套件庫索引
+│   │   ├── shiori/            # Shiori 套件
+│   │   │   ├── versions.yaml  # 版本列表
+│   │   │   └── v1.0.0+1/      # 特定版本
+│   │   │       └── package.yaml # 套件定義
+│   │   └── sample-web-app/    # Sample Web App 套件
+│   │       ├── versions.yaml  # 版本列表
+│   │       └── v1.0.0+1/      # 特定版本
+│   │           └── package.yaml # 套件定義
+│   └── README.md              # 套件庫文檔
+├── README.md                  # 專案概述
+└── memory-bank/               # 專案記憶庫
 ```
 
-## Technical Constraints
+## 技術限制
 
-### Glasskube Package Schema
-- Package definitions must follow the official Glasskube schema
-- Required fields: name, scope, shortDescription
-- For manifests packages: must include valid manifest URLs
-- For Helm packages: must include chartName, chartVersion, repositoryUrl
+### Glasskube 套件結構
+- 套件定義必須遵循官方 Glasskube 結構
+- 必需欄位: name, scope, shortDescription
+- 對於清單套件: 必須包含有效的清單 URL
+- 對於 Helm 套件: 必須包含 chartName, chartVersion, repositoryUrl
 
-### File Paths
-- URLs in package.yaml must be relative to the repository server root
-- Docker container maps the host directory to `/srv`, so paths must be adjusted accordingly
+### GitHub 檔案路徑
+- package.yaml 中的 URL 必須是完整的 GitHub raw URL
+- URL 格式: `https://raw.githubusercontent.com/{user}/{repo}/{branch}/path/to/file`
+- GitHub 儲存庫必須是公開的，以便 Glasskube 能夠訪問檔案
 
-### Docker Requirements
-- Docker must be installed and running
-- Container needs network port 9684 exposed
-- Host file system must be accessible to the container
+### GitHub 限制
+- GitHub 有 API 請求限制，可能影響高頻率的訪問
+- 依賴公開的 GitHub 儲存庫，如果設為私有將無法訪問
 
-## Tool Usage Patterns
+## 工具使用模式
 
-### Static File Server
+### Glasskube 套件庫管理
 ```bash
-# Start Caddy server via Docker
-docker run --rm -it \
-  -v "$(pwd):/srv" \
-  -p 9684:80 \
-  caddy:2-alpine \
-  caddy file-server --root /srv --listen :80
+# 添加 GitHub 套件庫
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
+
+# 列出可用套件
+glasskube list --repo github-repo
+
+# 安裝套件
+glasskube install shiori --repo github-repo
 ```
 
-### Glasskube Repository Management
+### 套件安裝與值設定
 ```bash
-# Add the local repository
-glasskube repo add local-repo http://localhost:9684/glasskube-packages/packages
-
-# List available packages
-glasskube list --repo local-repo
-
-# Install a package
-glasskube install shiori --repo local-repo
-```
-
-### Package Installation with Values
-```bash
-# Install with custom values
-glasskube install shiori --repo local-repo \
+# 使用自定義值安裝
+glasskube install shiori --repo github-repo \
   --value hostname=shiori.example.com \
   --value replicas=2
+```
+
+### GitHub URLs 格式
+```yaml
+# 清單 URL 格式
+url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
+
+# Helm 套件 URL 格式
+repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
 ```

@@ -1,48 +1,47 @@
-# Progress
+# 進度追蹤
 
-## Current Status
+## 已完成項目
 
-The project has been completed with the following achievements:
+### 套件庫設置 ✅
+- [x] 建立完整的 Glasskube 套件庫目錄結構
+- [x] 實作 Shiori 套件定義
+- [x] 實作 Sample Web App 套件定義
+- [x] 將套件定義 URL 從本地路徑更新為 GitHub raw URLs
+- [x] 更新 README.md 以反映使用 GitHub raw URLs 的新流程
 
-### Implemented
-- ✅ Created Glasskube package repository structure in `glasskube-packages/` directory
-- ✅ Packaged Shiori as a manifest-based Glasskube package
-- ✅ Packaged Sample Web App as a Helm-based Glasskube package 
-- ✅ Implemented direct file references to avoid duplication
-- ✅ Created Docker-based Caddy server startup script
-- ✅ Created comprehensive documentation (README.md and USAGE-GUIDE.md)
+### 文檔 ✅
+- [x] 添加詳細的使用說明文檔
+- [x] 添加套件結構說明
+- [x] 添加故障排除指南
+- [x] 更新文檔以反映 GitHub 整合方式
 
-### Working Features
-- ✅ Package definitions for both applications
-- ✅ Docker-based repository hosting
-- ✅ Value definitions for customizing installations
-- ✅ Clean directory structure
+## 進行中項目
 
-## Current Issues and Considerations
+### 測試 🔄
+- [ ] 完整的端到端測試
+- [ ] 驗證 GitHub raw URLs 的可靠性
+- [ ] 測試不同網路環境下的表現
 
-### Potential Issues
-1. **Path Resolution**: Depending on how the static server is configured, the path resolution for referenced files might need adjustment
-2. **Docker Dependency**: The solution requires Docker for the repository server
-3. **Local Testing Only**: The current setup is optimized for local testing, not production hosting
+### 改進 🔄
+- [ ] 為新增套件建立自動化流程
+- [ ] 考慮使用版本標籤替代固定分支引用
+- [ ] 改進套件版本管理策略
 
-### Next Steps
-1. **Testing**: Comprehensive testing of the package installations in a Kubernetes environment
-2. **Production Hosting**: If needed, set up a more permanent hosting solution (GitHub Pages, etc.)
-3. **CI/CD Integration**: Add automated testing and deployment workflows
+## 已知問題
 
-## Project Evolution
+1. 如果 GitHub 存儲庫不可訪問，套件安裝將失敗
+2. GitHub 的請求限制可能在高頻率使用時造成問題
 
-### Initial Approach
-The initial approach involved copying application files into the package repository, which would have created duplicate files requiring synchronization.
+## 項目決策演變
 
-### Current Approach
-We evolved to using direct references to original files, which eliminates duplication and maintenance overhead. This was achieved by:
+### 檔案服務解決方案
+| 日期 | 決策 | 原因 |
+|------|------|------|
+| 初始 | 使用本地 Caddy 伺服器 | 簡單的本地開發，容易設置和控制 |
+| 最近 | 轉移到 GitHub raw URLs | 更好的可訪問性，無需維護服務器，整合 GitOps 流程 |
 
-1. Modifying package definitions to point directly to files in the `apps/` directory
-2. Configuring a Docker-based Caddy server to serve the entire project directory
-3. Creating a clean directory structure that separates concerns
-
-### Future Considerations
-1. **Package Updates**: Consider implementing a versioning strategy for updating packages
-2. **Private Repository Support**: Add authentication for private package repositories
-3. **Multiple Package Sources**: Support for multiple applications from various sources
+### 套件組織
+| 日期 | 決策 | 原因 |
+|------|------|------|
+| 初始 | 使用相對路徑引用應用文件 | 避免重複，保持同步 |
+| 最近 | 使用完整 GitHub raw URLs | 使套件庫可直接被任何人使用，不需本地伺服器 |
