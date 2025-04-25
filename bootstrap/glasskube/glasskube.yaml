@@ -9,6 +9,7 @@ kind: Namespace
 metadata:
   annotations:
     packages.glasskube.dev/telemetry-enabled: "true"
+    packages.glasskube.dev/telemetry-id: 9c86fd9e-3855-41ad-9921-f1d9e8155e08
   labels:
     app.kubernetes.io/component: manager
     app.kubernetes.io/created-by: glasskube
@@ -660,6 +661,10 @@ spec:
                 - name
                 - version
                 type: object
+              suspend:
+                description: Suspend indicates that reconciliation of this resource
+                  should be suspended.
+                type: boolean
               values:
                 additionalProperties:
                   maxProperties: 1
@@ -8438,6 +8443,26 @@ spec:
                       chartVersion:
                         description: ChartVersion of the chart that should be installed.
                         type: string
+                      releases:
+                        items:
+                          properties:
+                            chartName:
+                              description: ChartName is the name of the chart that
+                                represents this package.
+                              type: string
+                            chartVersion:
+                              description: ChartVersion of the chart that should be
+                                installed.
+                              type: string
+                            values:
+                              description: Values that should be used for the helm
+                                release
+                              x-kubernetes-preserve-unknown-fields: true
+                          required:
+                          - chartName
+                          - chartVersion
+                          type: object
+                        type: array
                       repositoryUrl:
                         description: |-
                           RepositoryUrl is the remote URL of the helm repository. This is the same URL you would use
@@ -8447,10 +8472,10 @@ spec:
                         description: Values that should be used for the helm release
                         x-kubernetes-preserve-unknown-fields: true
                     required:
-                    - chartName
-                    - chartVersion
                     - repositoryUrl
                     type: object
+                    x-kubernetes-validations:
+                    - rule: size(self.releases) > 0 || (has(self.chartName) && has(self.chartVersion))
                   iconUrl:
                     type: string
                   kustomize:
@@ -9015,6 +9040,10 @@ spec:
                 - name
                 - version
                 type: object
+              suspend:
+                description: Suspend indicates that reconciliation of this resource
+                  should be suspended.
+                type: boolean
               values:
                 additionalProperties:
                   maxProperties: 1
@@ -10034,7 +10063,7 @@ spec:
         - --leader-elect
         command:
         - /package-operator
-        image: ghcr.io/glasskube/package-operator:v0.23.0
+        image: ghcr.io/glasskube/package-operator:v0.26.1
         livenessProbe:
           httpGet:
             path: /healthz
@@ -10114,7 +10143,7 @@ spec:
           containers:
           - command:
             - /cert-manager
-            image: ghcr.io/glasskube/package-operator:v0.23.0
+            image: ghcr.io/glasskube/package-operator:v0.26.1
             name: manager
             resources:
               limits:
@@ -10137,8 +10166,6 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  annotations:
-    argocd.argoproj.io/sync-options: Force=true,Replace=true
   name: glasskube-webhook-cert-init
   namespace: glasskube-system
 spec:
@@ -10147,7 +10174,7 @@ spec:
       containers:
       - command:
         - /cert-manager
-        image: ghcr.io/glasskube/package-operator:v0.23.0
+        image: ghcr.io/glasskube/package-operator:v0.26.1
         name: manager
         resources:
           limits:
@@ -10289,6 +10316,7 @@ kind: PackageRepository
 metadata:
   annotations:
     packages.glasskube.dev/default-repository: "true"
+  creationTimestamp: null
   name: glasskube
 spec:
   url: https://packages.dl.glasskube.dev/packages
