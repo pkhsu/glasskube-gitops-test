@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://glasskube.dev/schemas/v1/package-index.json
+packages:
+  - name: shiori
+    shortDescription: Simple command-line bookmark manager
+    iconUrl: https://raw.githubusercontent.com/go-shiori/shiori/master/docs/assets/logo-192.png
+    latestVersion: v0.1.0+1 # Matches packages/shiori/versions.yaml
+  # Add other existing packages if needed, or sample-web-app later

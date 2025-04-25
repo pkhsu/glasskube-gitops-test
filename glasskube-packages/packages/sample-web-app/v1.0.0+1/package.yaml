@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://glasskube.dev/schemas/v1/package-manifest.json
+name: sample-web-app
+scope: Namespaced
+defaultNamespace: sample-web-app
+shortDescription: A sample Node.js web application
+longDescription: |
+  ## Sample Web App
+  This is a sample Node.js web application that can be deployed to Kubernetes.
+  
+  ### Features
+  - Simple Node.js server
+  - Containerized with Docker
+  - Deployed with Helm
+
+iconUrl: https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg
+
+# Using the Helm chart approach
+helm:
+  chartName: eap-distr-simulator
+  chartVersion: 0.1.0
+  # Using direct path to the original Helm chart in the apps directory
+  repositoryUrl: /apps/sample-web-app/chart/
+
+valueDefinitions:
+  replicaCount:
+    metadata:
+      description: "Number of replicas to run"
+    type: number
+    defaultValue: "1"
+    targets:
+      - chartName: eap-distr-simulator
+        patch:
+          op: replace
+          path: /replicaCount
+  ingressEnabled:
+    metadata:
+      description: "Enable ingress for external access"
+    type: boolean
+    defaultValue: "false"
+    targets:
+      - chartName: eap-distr-simulator
+        patch:
+          op: replace
+          path: /ingress/enabled
+  ingressHost:
+    metadata:
+      description: "Hostname for the ingress"
+    type: text
+    defaultValue: "sample-web-app.example"
+    targets:
+      - chartName: eap-distr-simulator
+        patch:
+          op: replace
+          path: /ingress/hosts/0/host
+
+values:
+  # Make sure base structure exists for valueDefinitions
+  ingress:
+    hosts:
+      - host: ""
+        paths: 
+          - path: /
+            pathType: Prefix
+
+entrypoints:
+  - name: web-ui
+    serviceName: sample-web-app
+    port: 80
+    localPort: 3000
+    scheme: http
+
+references:
+  - label: "Node.js Documentation"
+    url: "https://nodejs.org/en/docs/"
+  - label: "Repository"
+    url: "https://github.com/kevinhsu/project/side-project/glasskube-gitops-test/apps/sample-web-app" 

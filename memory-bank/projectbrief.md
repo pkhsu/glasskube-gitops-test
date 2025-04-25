@@ -1,3 +1,23 @@
+# Project Brief: Glasskube Package Repository
+
+## Core Objectives
+- Create a Glasskube package repository for Shiori and Sample Web App applications
+- Implement a structure that avoids duplicate files and simplifies maintenance
+- Enable local testing and deployment of Glasskube packages
+
+## Key Requirements
+- Package Shiori as a Kubernetes manifests-based Glasskube package
+- Package Sample Web App as a Helm-based Glasskube package
+- Use direct references to original files to avoid duplication
+- Provide a Docker-based solution for running the package repository locally
+- Create documentation for using and extending the package repository
+
+## Success Criteria
+- Working Glasskube package definitions for both applications
+- Ability to install packages via Glasskube CLI
+- Clean directory structure that minimizes maintenance overhead
+- Well-documented process for testing and extending the repository
+
 # 專案簡介
 
 使用此儲存庫作為範本，即可在幾分鐘內（而非數小時）開始使用 ArgoCD 和 Glasskube。

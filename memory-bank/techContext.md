@@ -1,40 +1,108 @@
-# 技術背景 (Tech Context)
+# Technical Context
 
-## 使用的技術
+## Technologies Used
 
--   **Kubernetes:** 底層的容器編排平台。
--   **Git:** 用於版本控制，是 GitOps 工作流程的骨幹。
--   **ArgoCD:** GitOps 持續交付工具，用於將叢集狀態與 Git 儲存庫同步。
--   **Glasskube:** Kubernetes 的套件管理器，此處用於宣告式地管理應用程式。
--   **YAML:** 定義 Kubernetes 資源、ArgoCD 應用程式和 Glasskube 套件的主要語言。
--   **Helm:** 可能用於定義 `apps/` 中的原始應用程式（特別是 `sample-web-app` 似乎具有 Helm chart 結構）。需要透過檢查 `apps/` 目錄來確認。
--   **Docker:** 很可能用於容器化 `sample-web-app`（由 `Dockerfile` 和 `.dockerignore` 表明）。
--   **Node.js:** 由 `sample-web-app` 使用（由 `package.json`, `index.js` 表明）。
+### Core Technologies
+- **Kubernetes**: Container orchestration platform
+- **Glasskube**: Kubernetes package manager
+- **Docker**: Container platform used for hosting the package repository
 
-## 開發設定
+### Package Definition
+- **YAML**: Used for Kubernetes manifests and Glasskube package definitions
+- **JSON Schema**: Used for package.yaml validation (https://glasskube.dev/schemas/v1/package-manifest.json)
 
--   很可能需要一個本地 Kubernetes 叢集（例如 Minikube、Kind、k3d、Docker Desktop）進行測試。
--   `kubectl` CLI 用於與 Kubernetes 叢集互動。
--   `git` CLI 用於版本控制。
--   `glasskube` CLI 可能對套件開發和測試有用，儘管目標是透過 GitOps 進行管理。簡介中提到的 `bootstrap --dry-run` 指令暗示了它的用途。
--   `argocd` CLI 可能對與 ArgoCD 互動有用。
--   文字編輯器或 IDE（如 VS Code）用於編輯 YAML 檔案和可能的應用程式程式碼。
+### Web Server
+- **Caddy**: Lightweight, modern web server used to serve static files
+- **HTTP/HTTPS**: Protocol for accessing the package repository
 
-## 技術限制
+## Development Setup
 
--   解決方案必須遵守 GitOps 原則。所有對應用程式和設定的變更都應透過 Git 提交來驅動。
--   應用程式必須使用 Glasskube 的 `Package` 或 `ClusterPackage` 格式進行封裝。
--   此設定假設 ArgoCD 已經設定好或將被設定為管理此儲存庫。
+### Prerequisites
+- **Docker**: Required for running the Caddy server
+- **Kubernetes Cluster**: Required for testing package installations
+- **Glasskube CLI**: Required for interacting with packages and repositories
 
-## 依賴關係
+### Directory Structure
+```
+glasskube-gitops-test/
+├── apps/                      # Original application sources
+│   ├── shiori/                # K8s manifests for Shiori
+│   │   ├── cluster.yaml
+│   │   ├── deployment.yaml
+│   │   ├── ingress.yaml
+│   │   ├── namespace.yaml
+│   │   ├── persistentvolumeclaim.yaml
+│   │   └── service.yaml
+│   └── sample-web-app/        # Sample Node.js app with Helm
+│       ├── chart/             # Helm chart directory
+│       │   ├── templates/     # Helm templates
+│       │   ├── Chart.yaml     # Chart definition
+│       │   └── values.yaml    # Default values
+│       ├── Dockerfile         # Container image definition
+│       ├── index.js           # Application code
+│       └── package.json       # Node.js dependencies
+├── glasskube-packages/        # Glasskube package repository
+│   ├── packages/              # Package definitions directory
+│   │   ├── index.yaml         # Repository index
+│   │   ├── shiori/            # Shiori package
+│   │   │   ├── versions.yaml  # Version list
+│   │   │   └── v1.0.0+1/      # Specific version
+│   │   │       └── package.yaml # Package definition
+│   │   └── sample-web-app/    # Sample Web App package
+│   │       ├── versions.yaml  # Version list
+│   │       └── v1.0.0+1/      # Specific version
+│   │           └── package.yaml # Package definition
+│   └── README.md              # Repository documentation
+├── docker-caddy.sh            # Script to start Docker Caddy server
+├── README.md                  # Project overview
+└── USAGE-GUIDE.md             # Detailed usage instructions
+```
 
--   一個正在運行的 Kubernetes 叢集。
--   在叢集中安裝並設定好的 ArgoCD。
--   在叢集中安裝好的 Glasskube 控制器（透過 ArgoCD 引導）。
+## Technical Constraints
 
-## 工具使用模式
+### Glasskube Package Schema
+- Package definitions must follow the official Glasskube schema
+- Required fields: name, scope, shortDescription
+- For manifests packages: must include valid manifest URLs
+- For Helm packages: must include chartName, chartVersion, repositoryUrl
 
--   **Git:** 用於所有設定和應用程式定義的變更。
--   **ArgoCD:** 自動將 Git 中的變更應用到叢集。管理 Glasskube 安裝和應用程式套件。
--   **Glasskube:** 根據 ArgoCD 應用的 `Package` / `ClusterPackage` 資源，管理已封裝應用程式（"shiori"、"sample-web-app"）的生命週期。
--   **`glasskube bootstrap --dry-run -o yaml`:** 被提及作為一種產生清單的方式，可能對理解所需結構或用於自訂設定有用。
+### File Paths
+- URLs in package.yaml must be relative to the repository server root
+- Docker container maps the host directory to `/srv`, so paths must be adjusted accordingly
+
+### Docker Requirements
+- Docker must be installed and running
+- Container needs network port 9684 exposed
+- Host file system must be accessible to the container
+
+## Tool Usage Patterns
+
+### Static File Server
+```bash
+# Start Caddy server via Docker
+docker run --rm -it \
+  -v "$(pwd):/srv" \
+  -p 9684:80 \
+  caddy:2-alpine \
+  caddy file-server --root /srv --listen :80
+```
+
+### Glasskube Repository Management
+```bash
+# Add the local repository
+glasskube repo add local-repo http://localhost:9684/glasskube-packages/packages
+
+# List available packages
+glasskube list --repo local-repo
+
+# Install a package
+glasskube install shiori --repo local-repo
+```
+
+### Package Installation with Values
+```bash
+# Install with custom values
+glasskube install shiori --repo local-repo \
+  --value hostname=shiori.example.com \
+  --value replicas=2
+```
