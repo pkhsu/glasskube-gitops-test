@@ -18,13 +18,13 @@ iconUrl: https://raw.githubusercontent.com/go-shiori/shiori/master/static/favico
 
 # We're using manifests since Shiori is defined as K8s manifests
 manifests:
-  # Using direct paths to the original manifests in the apps directory
-  - url: /apps/shiori/namespace.yaml
-  - url: /apps/shiori/deployment.yaml
-  - url: /apps/shiori/service.yaml
-  - url: /apps/shiori/persistentvolumeclaim.yaml
-  - url: /apps/shiori/ingress.yaml
-  - url: /apps/shiori/cluster.yaml
+  # Using direct links to GitHub raw content
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/namespace.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/service.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/persistentvolumeclaim.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/ingress.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/cluster.yaml
 
 valueDefinitions:
   hostname:

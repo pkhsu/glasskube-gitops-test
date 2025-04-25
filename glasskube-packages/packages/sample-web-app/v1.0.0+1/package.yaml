@@ -18,8 +18,8 @@ iconUrl: https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg
 helm:
   chartName: eap-distr-simulator
   chartVersion: 0.1.0
-  # Using direct path to the original Helm chart in the apps directory
-  repositoryUrl: /apps/sample-web-app/chart/
+  # Using GitHub raw content URL
+  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
 
 valueDefinitions:
   replicaCount:
@@ -73,4 +73,4 @@ references:
   - label: "Node.js Documentation"
     url: "https://nodejs.org/en/docs/"
   - label: "Repository"
-    url: "https://github.com/kevinhsu/project/side-project/glasskube-gitops-test/apps/sample-web-app" 
+    url: "https://github.com/pkhsu/glasskube-gitops-test/tree/main/apps/sample-web-app" 

@@ -1,30 +1,108 @@
-# Glasskube GitOps 測試專案
+# Glasskube Package Repository 使用指南
 
-本專案示範如何使用 Glasskube 打包和管理 Kubernetes 應用程式。
+本指南說明如何使用我們的 Glasskube 套件庫，包含 Shiori 和 Sample Web App 兩個應用程式。
 
-## 專案結構
+## 快速開始
 
-- **apps/** - 包含原始的應用程式定義
-  - **shiori/** - Shiori 書籤管理應用的 Kubernetes 清單檔
-  - **sample-web-app/** - 範例 Web 應用及其 Helm chart
+### 1. 添加套件庫到 Glasskube
 
-- **glasskube-packages/** - Glasskube 套件定義
-  - **packages/** - 包含 Glasskube 套件的定義檔
-
-## 啟動套件庫伺服器
-
-使用 Docker (推薦):
 ```bash
-./docker-caddy.sh
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
 ```
 
-## 詳細使用指南
+### 2. 列出可用套件
 
-請參閱 [使用指南](USAGE-GUIDE.md) 獲取完整的使用說明和範例。
+```bash
+glasskube list --repo github-repo
+```
 
-## 特色
+你應該能看到兩個套件：`shiori` 和 `sample-web-app`。
 
-- 使用相對路徑直接引用原始應用程式檔案
-- 避免檔案複製，提高維護效率
-- 支援 Docker 方式啟動靜態檔案伺服器
-- 完整支援 Kubernetes 清單檔和 Helm chart
+## 安裝套件
+
+### 安裝 Shiori
+
+基本安裝：
+
+```bash
+glasskube install shiori --repo github-repo
+```
+
+自定義參數安裝：
+
+```bash
+glasskube install shiori --repo github-repo \
+  --value hostname=shiori.example.com \
+  --value replicas=2 \
+  --value storageSize=2Gi
+```
+
+### 安裝 Sample Web App
+
+基本安裝：
+
+```bash
+glasskube install sample-web-app --repo github-repo
+```
+
+啟用 Ingress：
+
+```bash
+glasskube install sample-web-app --repo github-repo \
+  --value ingressEnabled=true \
+  --value ingressHost=webapp.example.com \
+  --value replicaCount=3
+```
+
+## 訪問應用程式
+
+安裝後，可以使用以下命令打開應用程式：
+
+```bash
+# 打開 Shiori Web UI
+glasskube open shiori
+
+# 打開 Sample Web App
+glasskube open sample-web-app
+```
+
+## 管理套件
+
+### 查看已安裝套件
+
+```bash
+glasskube list -i
+```
+
+### 更新套件
+
+```bash
+glasskube update shiori
+```
+
+### 卸載套件
+
+```bash
+glasskube uninstall shiori
+```
+
+## 目錄結構說明
+
+本專案使用 GitHub raw 連結直接引用原始檔案，減少重複檔案：
+
+- GitHub 上的 `apps/shiori/` - Shiori 的原始 Kubernetes 清單檔
+- GitHub 上的 `apps/sample-web-app/chart/` - Sample Web App 的原始 Helm chart
+- GitHub 上的 `glasskube-packages/packages/` - Glasskube 套件定義
+
+這種架構的優點是：
+1. 只需要維護一份檔案，減少同步的負擔
+2. 不需要本地檔案伺服器，可直接從 GitHub 獲取檔案
+3. 可以輕鬆共享和分發套件庫
+
+## 故障排除
+
+如果遇到問題：
+
+1. 確認您已正確添加 GitHub 套件庫：`https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages`
+2. 確認 GitHub 儲存庫是公開的，以便 Glasskube 能夠訪問檔案
+3. 檢查 `package.yaml` 中的 URL 是否正確指向 GitHub raw 內容 
