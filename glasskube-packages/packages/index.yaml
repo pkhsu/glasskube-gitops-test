@@ -1,9 +1,9 @@
 packages:
   - name: shiori
-    iconUrl: https://raw.githubusercontent.com/go-shiori/shiori/master/static/favicon-32x32.png
+    iconUrl: https://avatars.githubusercontent.com/u/41993376?s=280&v=4
     latestVersion: v1.0.0+1
     shortDescription: A simple bookmark manager for self-hosted deployments
   - name: sample-web-app
-    iconUrl: https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg
+    iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
     latestVersion: v1.0.0+1
     shortDescription: A sample Node.js web application 
