@@ -27,93 +27,6 @@ helm:
   # Using GitHub raw content URL
   repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
 
-# Adding deployment manifests directly
-manifests:
-  - path: deployment.yaml
-    content: |
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: sample-web-app
-        labels:
-          app: sample-web-app
-      spec:
-        replicas: 1
-        selector:
-          matchLabels:
-            app: sample-web-app
-        template:
-          metadata:
-            labels:
-              app: sample-web-app
-          spec:
-            containers:
-            - name: sample-web-app
-              image: "node:16-alpine"
-              imagePullPolicy: IfNotPresent
-              ports:
-              - containerPort: 3000
-                protocol: TCP
-              resources:
-                requests:
-                  cpu: 100m
-                  memory: 128Mi
-                limits:
-                  cpu: 300m
-                  memory: 256Mi
-  - path: service.yaml
-    content: |
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: sample-web-app
-        labels:
-          app: sample-web-app
-      spec:
-        type: ClusterIP
-        ports:
-        - port: 80
-          targetPort: 3000
-          protocol: TCP
-          name: http
-        selector:
-          app: sample-web-app
-  - path: serviceaccount.yaml
-    content: |
-      apiVersion: v1
-      kind: ServiceAccount
-      metadata:
-        name: sample-web-app
-        labels:
-          app: sample-web-app
-  - path: role.yaml
-    content: |
-      apiVersion: rbac.authorization.k8s.io/v1
-      kind: Role
-      metadata:
-        name: sample-web-app
-        labels:
-          app: sample-web-app
-      rules:
-      - apiGroups: [""]
-        resources: ["pods"]
-        verbs: ["get", "list", "watch"]
-  - path: rolebinding.yaml
-    content: |
-      apiVersion: rbac.authorization.k8s.io/v1
-      kind: RoleBinding
-      metadata:
-        name: sample-web-app
-        labels:
-          app: sample-web-app
-      roleRef:
-        apiGroup: rbac.authorization.k8s.io
-        kind: Role
-        name: sample-web-app
-      subjects:
-      - kind: ServiceAccount
-        name: sample-web-app
-
 valueDefinitions:
   replicaCount:
     metadata:
@@ -173,8 +86,8 @@ values:
   resources: null
   replicaCount: 1
   serviceAccount:
-    create: false  # Disable automatic creation since we define it explicitly
-    name: "sample-web-app"  # Use our explicitly defined service account
+    create: true  # Enable automatic service account creation by Helm
+    name: "sample-web-app"  # Name of the service account
 
 entrypoints:
   - name: web-ui
