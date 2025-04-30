@@ -127,12 +127,14 @@ valueDefinitions:
 values:
   # Make sure base structure exists for valueDefinitions
   ingress:
+    enabled: false
     hosts:
       - host: ""
         paths: 
           - path: /
             pathType: Prefix
   resources: null
+  replicaCount: 1
 
 entrypoints:
   - name: web-ui
