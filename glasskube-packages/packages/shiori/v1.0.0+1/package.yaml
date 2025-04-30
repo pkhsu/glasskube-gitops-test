@@ -13,8 +13,12 @@ longDescription: |
   - Search capabilities
   - Responsive design
   - Self-hosted solution
+  
+  ### Getting Started
+  Once deployed, you can access Shiori via your browser at your configured hostname. 
+  Default credentials are username: `shiori` and password: `shiori`.
 
-iconUrl: https://raw.githubusercontent.com/go-shiori/shiori/master/static/favicon-32x32.png
+iconUrl: https://avatars.githubusercontent.com/u/41993376?s=280&v=4
 
 # We're using manifests since Shiori is defined as K8s manifests
 manifests:
@@ -30,6 +34,7 @@ valueDefinitions:
   hostname:
     metadata:
       description: "The hostname for accessing Shiori"
+      label: "Hostname"
     type: text
     defaultValue: "my-shiori.example"
     targets:
@@ -41,6 +46,7 @@ valueDefinitions:
   replicas:
     metadata:
       description: "Number of Shiori instances to run"
+      label: "Replicas"
     type: number
     defaultValue: "1"
     targets:
@@ -52,6 +58,7 @@ valueDefinitions:
   storageSize:
     metadata:
       description: "Size of persistent storage for Shiori data"
+      label: "Storage Size"
     type: text
     defaultValue: "1Gi"
     targets:
@@ -60,6 +67,19 @@ valueDefinitions:
             patch:
               op: replace
               path: /spec/resources/requests/storage
+  enableIngress:
+    metadata:
+      description: "Enable ingress for external access to Shiori"
+      label: "Enable Ingress"
+    type: boolean
+    defaultValue: "true"
+    targets:
+      - manifests:
+          - selector: "kind=Ingress,name=shiori"
+            patch:
+              op: replace
+              path: /metadata/annotations/kubernetes.io~1ingress.class
+              valueTemplate: "{{if .}}nginx{{else}}null{{end}}"
 
 entrypoints:
   - name: web-ui
@@ -72,4 +92,6 @@ references:
   - label: "GitHub Repository"
     url: "https://github.com/go-shiori/shiori"
   - label: "Documentation"
-    url: "https://github.com/go-shiori/shiori/blob/master/README.md" 
+    url: "https://github.com/go-shiori/shiori/blob/master/README.md"
+  - label: "Docker Image"
+    url: "https://hub.docker.com/r/ghcr.io/go-shiori/shiori" 

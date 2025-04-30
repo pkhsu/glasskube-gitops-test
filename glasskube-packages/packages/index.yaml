@@ -3,7 +3,9 @@ packages:
     iconUrl: https://avatars.githubusercontent.com/u/41993376?s=280&v=4
     latestVersion: v1.0.0+1
     shortDescription: A simple bookmark manager for self-hosted deployments
+    scope: Namespaced
   - name: sample-web-app
     iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
     latestVersion: v1.0.0+1
-    shortDescription: A sample Node.js web application 
+    shortDescription: A sample Node.js web application
+    scope: Namespaced 

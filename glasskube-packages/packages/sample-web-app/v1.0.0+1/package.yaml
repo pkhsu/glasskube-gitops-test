@@ -11,8 +11,12 @@ longDescription: |
   - Simple Node.js server
   - Containerized with Docker
   - Deployed with Helm
+  
+  ### Getting Started
+  Once deployed, you can access the application via your browser at your configured hostname.
+  The application displays a simple "Hello World" page with Node.js information.
 
-iconUrl: https://nodejs.org/static/images/logos/nodejs-new-pantone-black.svg
+iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
 
 # Using the Helm chart approach
 helm:
@@ -25,6 +29,7 @@ valueDefinitions:
   replicaCount:
     metadata:
       description: "Number of replicas to run"
+      label: "Replicas"
     type: number
     defaultValue: "1"
     targets:
@@ -35,6 +40,7 @@ valueDefinitions:
   ingressEnabled:
     metadata:
       description: "Enable ingress for external access"
+      label: "Enable Ingress"
     type: boolean
     defaultValue: "false"
     targets:
@@ -45,6 +51,7 @@ valueDefinitions:
   ingressHost:
     metadata:
       description: "Hostname for the ingress"
+      label: "Ingress Hostname"
     type: text
     defaultValue: "sample-web-app.example"
     targets:
@@ -52,6 +59,18 @@ valueDefinitions:
         patch:
           op: replace
           path: /ingress/hosts/0/host
+  resources:
+    metadata:
+      description: "Configure CPU/Memory resource limits"
+      label: "Resource Limits"
+    type: boolean
+    defaultValue: "false"
+    targets:
+      - chartName: eap-distr-simulator
+        valueTemplate: "{{if .}}{ requests: { cpu: '100m', memory: '128Mi' }, limits: { cpu: '300m', memory: '256Mi' } }{{else}}null{{end}}"
+        patch:
+          op: replace
+          path: /resources
 
 values:
   # Make sure base structure exists for valueDefinitions
@@ -61,6 +80,7 @@ values:
         paths: 
           - path: /
             pathType: Prefix
+  resources: null
 
 entrypoints:
   - name: web-ui
@@ -73,4 +93,6 @@ references:
   - label: "Node.js Documentation"
     url: "https://nodejs.org/en/docs/"
   - label: "Repository"
-    url: "https://github.com/pkhsu/glasskube-gitops-test/tree/main/apps/sample-web-app" 
+    url: "https://github.com/pkhsu/glasskube-gitops-test/tree/main/apps/sample-web-app"
+  - label: "Docker Hub"
+    url: "https://hub.docker.com/_/node" 
