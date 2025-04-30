@@ -67,7 +67,7 @@ valueDefinitions:
     defaultValue: "false"
     targets:
       - chartName: eap-distr-simulator
-        valueTemplate: "{{if .}}{ requests: { cpu: '100m', memory: '128Mi' }, limits: { cpu: '300m', memory: '256Mi' } }{{else}}null{{end}}"
+        valueTemplate: '{{if .}}{ "requests": { "cpu": "100m", "memory": "128Mi" }, "limits": { "cpu": "300m", "memory": "256Mi" } }{{else}}null{{end}}'
         patch:
           op: replace
           path: /resources
