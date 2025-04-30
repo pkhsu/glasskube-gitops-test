@@ -1,4 +1,6 @@
 # yaml-language-server: $schema=https://glasskube.dev/schemas/v1/package-manifest.json
+apiVersion: packages.glasskube.dev/v1
+kind: PackageManifest
 name: sample-web-app
 scope: Namespaced
 defaultNamespace: sample-web-app
