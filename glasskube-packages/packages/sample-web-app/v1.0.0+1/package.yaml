@@ -76,6 +76,41 @@ manifests:
           name: http
         selector:
           app: sample-web-app
+  - path: serviceaccount.yaml
+    content: |
+      apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: sample-web-app
+        labels:
+          app: sample-web-app
+  - path: role.yaml
+    content: |
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: Role
+      metadata:
+        name: sample-web-app
+        labels:
+          app: sample-web-app
+      rules:
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["get", "list", "watch"]
+  - path: rolebinding.yaml
+    content: |
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: sample-web-app
+        labels:
+          app: sample-web-app
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: Role
+        name: sample-web-app
+      subjects:
+      - kind: ServiceAccount
+        name: sample-web-app
 
 valueDefinitions:
   replicaCount:
@@ -135,6 +170,9 @@ values:
             pathType: Prefix
   resources: null
   replicaCount: 1
+  serviceAccount:
+    create: false  # Disable automatic creation since we define it explicitly
+    name: "sample-web-app"  # Use our explicitly defined service account
 
 entrypoints:
   - name: web-ui
