@@ -76,13 +76,17 @@ valueDefinitions:
 
 values:
   # Make sure base structure exists for valueDefinitions
+  # Match the structure of the Helm chart's values.yaml
   ingress:
     enabled: false
+    className: ""
+    annotations: {}
     hosts:
       - host: ""
         paths: 
           - path: /
             pathType: Prefix
+    tls: []
   resources: null
   replicaCount: 1
   serviceAccount:
