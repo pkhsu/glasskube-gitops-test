@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  eap-distr-simulator:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-05-05T16:28:20.358441+08:00"
+    description: A Helm chart for deploying the EAP Distribution Simulator application
+    digest: 866ac4b78ecf620e4a0fa2fce896d4393dc1727218aacf06161fdd80d7d0ce7a
+    name: eap-distr-simulator
+    type: application
+    urls:
+    - eap-distr-simulator-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-05-05T16:28:20.358137+08:00"
