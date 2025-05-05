@@ -22,7 +22,7 @@ iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
 
 # 使用標準的Helm chart方式
 helm:
-  chartName: eap-distr-simulator
+  chartName: sample-web-app
   chartVersion: 0.1.0
   # 指向GitHub raw內容作為Helm repository
   repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/helm-repo/
@@ -53,13 +53,13 @@ values:
 
 entrypoints:
   - name: web-ui
-    serviceName: zzzzz-sample-web-app-eap-distr-simulator
+    serviceName: sample-web-app
     port: 80
     localPort: 3100
     scheme: http
     context: /
   - name: api
-    serviceName: zzzzz-sample-web-app-eap-distr-simulator
+    serviceName: sample-web-app
     port: 80
     localPort: 3101
     scheme: http

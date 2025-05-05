@@ -1,9 +1,9 @@
-{{- $fullName := include "eap-distr-simulator.fullname" . -}}
+{{- $fullName := include "sample-web-app.fullname" . -}}
 {{- $namespace := .Release.Namespace -}}
 {{- $servicePort := .Values.service.port -}}
 {{- $serviceType := .Values.service.type -}}
 
-The EAP Distribution Simulator has been deployed.
+The Sample Web App has been deployed.
 
 {{- if contains "NodePort" $serviceType }}
   export NODE_PORT=$(kubectl get --namespace {{ $namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ $fullName }})
