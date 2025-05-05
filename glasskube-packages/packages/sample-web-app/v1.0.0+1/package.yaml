@@ -53,13 +53,13 @@ values:
 
 entrypoints:
   - name: web-ui
-    serviceName: sample-web-app
+    serviceName: zzzzz-sample-web-app-eap-distr-simulator
     port: 80
     localPort: 3100
     scheme: http
     context: /
   - name: api
-    serviceName: sample-web-app
+    serviceName: zzzzz-sample-web-app-eap-distr-simulator
     port: 80
     localPort: 3101
     scheme: http
