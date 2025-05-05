@@ -20,11 +20,12 @@ longDescription: |
 
 iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
 
-# 直接使用 manifests 方式，而不是 helm
-manifests:
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/deployment.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/service.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/serviceaccount.yaml
+# 使用標準的Helm chart方式
+helm:
+  chartName: eap-distr-simulator
+  chartVersion: 0.1.0
+  # 指向GitHub raw內容作為Helm repository
+  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/helm-repo/
 
 values:
   # 啟用關鍵配置值
