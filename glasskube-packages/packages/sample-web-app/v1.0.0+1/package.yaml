@@ -20,35 +20,35 @@ longDescription: |
 
 iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
 
-# Using the Helm chart approach
-helm:
-  chartName: eap-distr-simulator
-  chartVersion: 0.1.0
-  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
+# 直接使用 manifests 方式，而不是 helm
+manifests:
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/deployment.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/service.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/templates/serviceaccount.yaml
 
-# values:
-#   # Make sure base structure exists for valueDefinitions
-#   ingress:
-#     enabled: false
-#     className: ""
-#     annotations: {}
-#     hosts:
-#       - host: "sample-web-app.example.com"
-#         paths: 
-#           - path: /
-#             pathType: Prefix
-#     tls: []
-#   service:
-#     type: ClusterIP
-#     port: 80
-#     targetPort: 3000
-#   resources: null
-#   replicaCount: 1
-#   serviceAccount:
-#     create: true
-#     name: "sample-web-app"
-#   image:
-#     pullPolicy: IfNotPresent
+values:
+  # 啟用關鍵配置值
+  ingress:
+    enabled: false
+    className: "nginx"
+    annotations: {}
+    hosts:
+      - host: "sample-web-app.example.com"
+        paths: 
+          - path: /
+            pathType: Prefix
+    tls: []
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+  resources: null
+  replicaCount: 1
+  serviceAccount:
+    create: true
+    name: "sample-web-app"
+  image:
+    pullPolicy: IfNotPresent
 
 entrypoints:
   - name: web-ui
