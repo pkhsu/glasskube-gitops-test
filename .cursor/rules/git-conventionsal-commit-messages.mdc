@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 # Git Conventional Commit Messages
 
@@ -101,3 +101,4 @@ test: add tests for user registration
 ```
 chore: update dependencies
 ```
+
