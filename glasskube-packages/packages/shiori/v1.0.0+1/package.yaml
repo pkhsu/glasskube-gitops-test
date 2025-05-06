@@ -23,6 +23,7 @@ iconUrl: https://avatars.githubusercontent.com/u/41993376?s=280&v=4
 # We're using manifests since Shiori is defined as K8s manifests
 manifests:
   # Using direct links to GitHub raw content
+  - url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.25/releases/cnpg-1.25.0.yaml
   - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/namespace.yaml
   - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
   - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/service.yaml
