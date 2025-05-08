@@ -3,7 +3,7 @@
 ## 架構概述
 
 ```
-glasskube-gitops-test/
+glasskube-package-test/
 ├── apps/                       # 原始應用程式定義
 │   ├── shiori/                 # Shiori Kubernetes 清單檔
 │   └── sample-web-app/         # Sample Web App 與 Helm chart
@@ -38,15 +38,15 @@ glasskube-gitops-test/
 ```yaml
 # 對於基於清單的套件 (Shiori)
 manifests:
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/namespace.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/namespace.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/deployment.yaml
   # ...
 
 # 對於基於 Helm 的套件 (Sample Web App)
 helm:
   chartName: eap-distr-simulator
   chartVersion: 0.1.0
-  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
+  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/sample-web-app/chart/
 ```
 
 ### 值定義模式
@@ -70,7 +70,7 @@ valueDefinitions:
 套件庫直接通過 GitHub raw URLs 訪問，無需本地伺服器：
 ```bash
 # 添加基於 GitHub 的套件庫
-glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/glasskube-packages/packages
 ```
 
 ## 關鍵實作路徑

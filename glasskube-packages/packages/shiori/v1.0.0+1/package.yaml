@@ -26,12 +26,12 @@ manifests:
   # Apply CNPG operator to manage PostgreSQL resources
   - url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.25/releases/cnpg-1.25.0.yaml
   # Using direct links to GitHub raw content
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/namespace.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/service.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/persistentvolumeclaim.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/ingress.yaml
-  - url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/cluster.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/namespace.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/deployment.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/service.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/persistentvolumeclaim.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/ingress.yaml
+  - url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/cluster.yaml
 
 entrypoints:
   - name: web-ui

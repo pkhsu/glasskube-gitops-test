@@ -25,7 +25,7 @@ helm:
   chartName: sample-web-app
   chartVersion: 0.1.0
   # 指向GitHub raw內容作為Helm repository
-  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/helm-repo/
+  repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/helm-repo/
 
 values:
   # 啟用關鍵配置值
@@ -71,4 +71,4 @@ references:
   - label: "Glasskube Package Guide"
     url: "https://glasskube.dev/products/package-manager/guides/how-to-add-a-package/"
   - label: "Repository"
-    url: "https://github.com/pkhsu/glasskube-gitops-test/tree/main/apps/sample-web-app" 
+    url: "https://github.com/pkhsu/glasskube-package-test/tree/main/apps/sample-web-app" 

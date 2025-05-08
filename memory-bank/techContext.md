@@ -24,7 +24,7 @@
 
 ### 目錄結構
 ```
-glasskube-gitops-test/
+glasskube-package-test/
 ├── apps/                      # 原始應用程式源碼
 │   ├── shiori/                # Shiori 的 K8s 清單檔
 │   │   ├── cluster.yaml
@@ -79,7 +79,7 @@ glasskube-gitops-test/
 ### Glasskube 套件庫管理
 ```bash
 # 添加 GitHub 套件庫
-glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/glasskube-packages/packages
 
 # 列出可用套件
 glasskube list --repo github-repo
@@ -99,8 +99,8 @@ glasskube install shiori --repo github-repo \
 ### GitHub URLs 格式
 ```yaml
 # 清單 URL 格式
-url: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/shiori/deployment.yaml
+url: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/shiori/deployment.yaml
 
 # Helm 套件 URL 格式
-repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/sample-web-app/chart/
+repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/sample-web-app/chart/
 ```

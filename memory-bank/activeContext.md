@@ -7,7 +7,7 @@
 ### 最近完成的變更
 
 1. **URL 更新** - 所有套件定義中的 URL 已從相對路徑更新為完整的 GitHub raw URLs
-   - 格式: `https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/apps/...`
+   - 格式: `https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/apps/...`
    - 這適用於 shiori 套件中的所有清單檔和 sample-web-app 的 Helm chart 位置
 
 2. **移除 Caddy 伺服器** - 不再需要 `docker-caddy.sh` 腳本，因為我們現在直接從 GitHub 提供檔案

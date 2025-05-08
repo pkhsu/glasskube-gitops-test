@@ -7,7 +7,7 @@
 ### 1. 添加套件庫到 Glasskube
 
 ```bash
-glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages
+glasskube repo add github-repo https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/glasskube-packages/packages
 ```
 
 ### 2. 列出可用套件
@@ -103,6 +103,6 @@ glasskube uninstall shiori
 
 如果遇到問題：
 
-1. 確認您已正確添加 GitHub 套件庫：`https://raw.githubusercontent.com/pkhsu/glasskube-gitops-test/main/glasskube-packages/packages`
+1. 確認您已正確添加 GitHub 套件庫：`https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/glasskube-packages/packages`
 2. 確認 GitHub 儲存庫是公開的，以便 Glasskube 能夠訪問檔案
 3. 檢查 `package.yaml` 中的 URL 是否正確指向 GitHub raw 內容 
