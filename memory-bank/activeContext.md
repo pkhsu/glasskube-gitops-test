@@ -55,27 +55,19 @@ We decided to use direct references to original application files (/apps/* direc
 - Creates a single source of truth for application manifests
 - Simplifies updates when application files change
 
-### Docker-Based Hosting
-We chose to use Docker with Caddy for hosting the package repository because:
-- It provides a consistent environment across different machines
-- Requires minimal setup (just Docker)
-- Can easily serve the entire project directory structure
-- Is suitable for both development and testing
-
 ### Package Configuration Strategy
 For both packages, we implemented valueDefinitions that allow end-users to customize:
 - For Shiori: hostname, replicas, and storage size
 - For Sample Web App: replica count, ingress enablement, and ingress hostname
 
 ## Key Insights
-1. **Single Source of Truth**: The direct file reference approach creates a clean separation between application sources and package definitions
-2. **Path Resolution**: The key to making direct references work is ensuring the static server is started from the project root
-3. **Docker Simplicity**: Using Docker for the repository server eliminates environment-specific setup issues
-4. **Value Targeting**: The valueDefinitions targeting system in Glasskube is powerful for patching specific parts of manifests or charts
+1. **Single Source of Truth**: The direct file reference approach creates a clean separation between application sources and package definitions.
+2. **URL Correctness**: With GitHub raw URLs, the key to making direct references work is ensuring correct URL formatting and public repository access.
+3. **Value Targeting**: The valueDefinitions targeting system in Glasskube is powerful for patching specific parts of manifests or charts.
 
 ## Current Patterns and Preferences
-1. Keep application files in their original location
-2. Use Docker for consistent environments
-3. Favor clear documentation over implicit understanding
-4. Design for single source of truth
-5. Provide customization options via valueDefinitions
+1. Keep application files in their original location.
+2. Favor clear documentation over implicit understanding.
+3. Design for single source of truth.
+4. Provide customization options via valueDefinitions.
+5. Utilize GitHub raw URLs for package file hosting to simplify access and eliminate server maintenance.
