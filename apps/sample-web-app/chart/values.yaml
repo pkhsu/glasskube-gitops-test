@@ -8,7 +8,7 @@ image:
   repository: 192.168.64.1:8585/sample-web-app # 更新为 Distr Hub Registry 地址
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0.0" # 指定我们构建的镜像标签
+  tag: "1.0.1" # 指定我们构建的镜像标签
 
 imagePullSecrets: []
 nameOverride: ""
