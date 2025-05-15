@@ -20,6 +20,18 @@ longDescription: |
 
 iconUrl: https://cdn-icons-png.flaticon.com/512/919/919825.png
 
+# ---
+# This section demonstrates how Glasskube's package configuration system enables dynamic value injection into Helm charts.
+#
+# 1. The 'values' block under the Helm chart provides default values for the chart deployment. Here, it sets 'env.CUSTOM_MESSAGE'.
+# 2. The 'valueDefinitions.customMessage' entry (not shown here, but implied) allows users to override or supply this value at install time.
+# 3. The 'targets' block under the value definition specifies how the user-supplied or default value should patch the Helm chart's values using a JSON patch operation.
+#    - In this example, the patch operation targets '/env/CUSTOM_MESSAGE' in the Helm values, enabling dynamic configuration.
+#
+# For more details, see:
+# https://glasskube.dev/products/package-manager/docs/design/package-config/#how-does-a-value-affect-the-deployed-package-resources
+# ---
+
 # 使用標準的Helm chart方式
 helm:
   chartName: sample-web-app
@@ -28,34 +40,10 @@ helm:
   repositoryUrl: https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/helm-repo/
   values:
     env:
-      CUSTOM_MESSAGE: "Test From package.yml helm block: AAAAAA"
-
-# values:
-#   # 啟用關鍵配置值
-#   ingress:
-#     enabled: false
-#     className: "nginx"
-#     annotations: {}
-#     hosts:
-#       - host: "sample-web-app.example.com"
-#         paths: 
-#           - path: /
-#             pathType: Prefix
-#     tls: []
-#   service:
-#     type: ClusterIP
-#     port: 80
-#     targetPort: 3000
-#   resources: null
-#   replicaCount: 1
-#   serviceAccount:
-#     create: true
-#     name: "sample-web-app"
-#   image:
-#     pullPolicy: IfNotPresent
-#   env:
-#     CUSTOM_MESSAGE: "Message from: Glasskube package.yaml top-level values (v1.0.1)"
-
+      CUSTOM_MESSAGE: "Messages from package.yaml helm block."
+  # values:
+  #   env: {}
+      
 valueDefinitions:
   customMessage:
     metadata:
@@ -64,7 +52,7 @@ valueDefinitions:
     type: text
     default: "Message from: Glasskube UI default (v1.0.1+1)"
     constraints:
-      minLength: 1
+      required: false
       maxLength: 100
     targets:
       - chartName: sample-web-app
