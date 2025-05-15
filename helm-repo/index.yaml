@@ -3,7 +3,17 @@ entries:
   sample-web-app:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-05-15T15:04:18.553903+08:00"
+    created: "2025-05-15T15:30:22.576085+08:00"
+    description: A Helm chart for deploying the Sample Web Application
+    digest: 71fa609dab3a2115fab1fcee704ee29cf78f0b1f84a335d0ef360ec9f1d85ec1
+    name: sample-web-app
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/helm-repo/sample-web-app-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-05-15T15:30:22.575789+08:00"
     description: A Helm chart for deploying the Sample Web Application
     digest: 02b62faaa86e1b9e207b3a510227f5d7c7ec8e02166a97362b052e5a4c505e03
     name: sample-web-app
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/pkhsu/glasskube-package-test/main/helm-repo/sample-web-app-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-15T15:04:18.55351+08:00"
+generated: "2025-05-15T15:30:22.575188+08:00"
