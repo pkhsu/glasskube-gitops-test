@@ -1,5 +1,7 @@
 # 專案簡介：Glasskube 套件庫
 
+> **狀態說明**：本專案已完成 Phase 1，程式碼穩定並標記 1.0.1 版本，近期暫無新開發計畫。未來如需繼續，請參考 memory-bank/activeContext.md。
+
 ## 專案階段
 ### Phase 1 - 基礎套件庫實作 (已完成)
 - 為 Shiori 和 Sample Web App 應用程式創建 Glasskube 套件庫

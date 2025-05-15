@@ -103,3 +103,14 @@ We chose to use the C4 model for architecture documentation because it:
 5. Utilize GitHub raw URLs for package file hosting to simplify access and eliminate server maintenance.
 6. Use C4 model and Mermaid for architecture documentation.
 7. Clearly distinguish between system components and their relationships.
+
+## 狀態更新：開發階段完成與暫停
+
+本階段（基礎 Glasskube 套件庫建置與 GitHub raw URL 整合）已圓滿完成，程式碼已穩定並標記為 1.0.1 版本。近期暫無新功能開發計畫，專案進度將暫停於此狀態。
+
+### 未來開發指引
+- 若需繼續開發，請先檢查 GitHub raw URLs 是否仍有效，並確認 repository 權限為公開。
+- 建議以語意化版本標籤（如 1.0.2, 1.1.0）管理後續變更。
+- 所有套件定義與原始應用程式檔案應維持單一來源原則，避免重複。
+- 重要架構與設計決策已記錄於 memory-bank/ 與 documents/ 目錄，請優先參考。
+- 若有新需求，請於 progress.md 補充規劃與分階段目標。

@@ -1,5 +1,7 @@
 # Product Context
 
+> **Status:** The initial phase is complete and the codebase is stable (tagged 1.0.1). For future development, see memory-bank/activeContext.md for guidance.
+
 ## Problem Statement
 Traditional Kubernetes application deployment involves complex Helm charts or YAML manifests that are difficult to maintain and share. Glasskube aims to solve this by providing a standardized package format that is easy to create, distribute, and install.
 
