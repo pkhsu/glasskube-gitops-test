@@ -2,7 +2,9 @@
 
 ## 當前工作重點
 
-目前的工作重點是將 Glasskube 套件庫從使用本地檔案伺服器轉換為直接使用 GitHub raw URL，這使得套件庫更容易分享和使用，無需額外的伺服器設置。
+目前的工作重點包括：
+1. 將 Glasskube 套件庫從使用本地檔案伺服器轉換為直接使用 GitHub raw URL
+2. 建立系統架構圖以更好地理解和溝通系統組件和關係
 
 ### 最近完成的變更
 
@@ -17,6 +19,12 @@
    - 移除了啟動本地伺服器的部分
    - 更新了故障排除指南
 
+4. **系統架構圖** - 使用 C4 模型創建了高級系統架構圖：
+   - 採用 Mermaid 格式，可直接在 GitHub 上查看
+   - 定義了系統範圍、核心系統和外部系統
+   - 識別了關鍵使用者角色及其與系統的互動方式
+   - 位於 `documents/glasskube_architecture_diagram.md`
+
 ## 當前決策和考量
 
 1. **使用 GitHub raw URLs 的優勢**:
@@ -24,7 +32,16 @@
    - 套件庫可以直接分享給其他人使用
    - 整合到 GitOps 工作流更加容易
 
-2. **考量事項**:
+2. **架構設計考量**:
+   - 明確定義 Glasskube 應用程式在 Kubernetes 上的運行
+   - 區分 Glasskube 套件庫和應用程式的不同角色
+   - 使 Package Author 和 Package Client 的互動路徑清晰化
+
+3. **系統範圍劃分**:
+   - 將核心 Glasskube 功能歸類在 System Scope
+   - 將監控功能獨立為 APM Scope
+
+4. **其他考量事項**:
    - 確保 GitHub 儲存庫保持公開以允許訪問
    - 確保分支名稱(main)在 URL 中正確指定
    - 在進行任何變更時需要更新 raw URL
@@ -41,11 +58,17 @@
    - 確保使用最新版本
    - 簡化維護流程
 
+3. C4 模型提供了有效的方式來:
+   - 可視化系統組件及其關係
+   - 明確定義系統範圍和邊界
+   - 識別不同使用者角色與系統的互動方式
+
 ## 下一步
 
 1. 進行整合測試以確保更新後的 URL 可正常運作
 2. 考慮為新增套件建立自動化工作流程
 3. 探索使用版本標籤而非固定分支，提高版本管理彈性
+4. 進一步完善架構文檔，可能添加其他 C4 模型圖表（如容器圖、組件圖）
 
 ## Active Decisions
 
@@ -60,10 +83,17 @@ For both packages, we implemented valueDefinitions that allow end-users to custo
 - For Shiori: hostname, replicas, and storage size
 - For Sample Web App: replica count, ingress enablement, and ingress hostname
 
+### Architecture Visualization
+We chose to use the C4 model for architecture documentation because it:
+- Provides a clear way to communicate system structure to both technical and non-technical stakeholders
+- Effectively captures different levels of abstraction (from high-level context to details)
+- Uses a format (Mermaid) that can be directly rendered in GitHub
+
 ## Key Insights
 1. **Single Source of Truth**: The direct file reference approach creates a clean separation between application sources and package definitions.
 2. **URL Correctness**: With GitHub raw URLs, the key to making direct references work is ensuring correct URL formatting and public repository access.
 3. **Value Targeting**: The valueDefinitions targeting system in Glasskube is powerful for patching specific parts of manifests or charts.
+4. **System Boundaries**: Clearly defining system boundaries in the architecture diagram helps identify responsibilities and interfaces.
 
 ## Current Patterns and Preferences
 1. Keep application files in their original location.
@@ -71,3 +101,5 @@ For both packages, we implemented valueDefinitions that allow end-users to custo
 3. Design for single source of truth.
 4. Provide customization options via valueDefinitions.
 5. Utilize GitHub raw URLs for package file hosting to simplify access and eliminate server maintenance.
+6. Use C4 model and Mermaid for architecture documentation.
+7. Clearly distinguish between system components and their relationships.
