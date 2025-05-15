@@ -51,7 +51,7 @@ Glasskube 透過「Package Definition (`package.yaml`)＋Package Repository」�
 
 ## 什麼是 Glasskube？ 🧊
 
-Glasskube 是一個 **開源的 Kubernetes 套件管理器**。它透過簡化套件配置選項並優先考慮套件的可維護性和自動化，使在 Kubernetes 上部署、更新和配置套件比 **Helm 或 Kustomize** 等工具**快 20 倍**。您可以選擇使用 Glasskube UI、CLI 或直接透過 GitOps 部署套件。
+Glasskube 是一個 **開源的 Kubernetes 套件管理器**。您可以選擇使用 Glasskube UI、CLI 或直接透過 GitOps 部署套件。
 
 Glasskube 部署定義在 **Package Repository** 中的套件。預設會配置官方的公開儲存庫。
 
