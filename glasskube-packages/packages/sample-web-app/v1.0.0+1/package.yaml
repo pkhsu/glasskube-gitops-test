@@ -50,6 +50,8 @@ values:
     name: "sample-web-app"
   image:
     pullPolicy: IfNotPresent
+  env:
+    CUSTOM_MESSAGE: "Message from: Glasskube package.yaml top-level values"
 
 valueDefinitions:
   customMessage:
@@ -60,6 +62,7 @@ valueDefinitions:
     default: "Message from: Glasskube UI default"
     constraints:
       minLength: 1
+      maxLength: 100
     targets:
       - chartName: sample-web-app
         patch:
