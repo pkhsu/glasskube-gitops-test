@@ -66,7 +66,7 @@ valueDefinitions:
     targets:
       - chartName: sample-web-app
         patch:
-          op: replace
+          op: add
           path: /env/CUSTOM_MESSAGE # This corresponds to the path in values.yaml
 
 entrypoints:
