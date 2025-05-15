@@ -80,3 +80,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  CUSTOM_MESSAGE: "Message from: Helm chart default" # Default message

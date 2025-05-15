@@ -1,13 +1,14 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
+const customMessage = process.env.CUSTOM_MESSAGE || "Message from: Code (if no env var is set)";
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Simple route for the root
 app.get('/', (req, res) => {
-  res.send('EAP Distribution Simulator is running!');
+  res.send(customMessage);
 });
 
 // Simulate initiating a distribution task
