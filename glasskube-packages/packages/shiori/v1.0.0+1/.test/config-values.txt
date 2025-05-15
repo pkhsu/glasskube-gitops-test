@@ -1,1 +1,0 @@
---value "hostname=test-shiori.example.com" --value "replicas=1" --value "storageSize=1Gi" --value "enableIngress=true" 
